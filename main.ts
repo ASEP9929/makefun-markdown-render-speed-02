@@ -1,17 +1,29 @@
-// The driver for the markdown-render-speed-02 entry: reads every case from
-// /input/cases.json (or MAKEFUN_INPUT_DIR), renders each one alone with
-// parse() from parse.js, and writes /output/html.json (or
-// MAKEFUN_OUTPUT_DIR): a JSON array of the HTML strings, one per case and in
-// the cases' order. Written from scratch for this entry.
+// Entry driver for markdown-render-speed-02.
+//
+// The kit drops a cases.json into MAKEFUN_INPUT_DIR (or /input) and
+// expects an html.json with one rendered string per case in
+// MAKEFUN_OUTPUT_DIR (or /output). Each case is rendered on its own so
+// link definitions never leak from one document into the next.
 
-import { readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { parse } from './parse.js';
 
-const INPUT_DIR = process.env.MAKEFUN_INPUT_DIR ?? '/input';
-const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+interface InputCase {
+  markdown: string;
+}
 
-const cases = JSON.parse(readFileSync(join(INPUT_DIR, 'cases.json'), 'utf8'));
-const html = [];
-for (let i = 0; i < cases.length; i++) html.push(parse(cases[i].markdown));
-writeFileSync(join(OUTPUT_DIR, 'html.json'), JSON.stringify(html));
+function main(): void {
+  const inDir = process.env.MAKEFUN_INPUT_DIR ?? '/input';
+  const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+  const payload = fs.readFileSync(path.join(inDir, 'cases.json'), 'utf8');
+  const docs = JSON.parse(payload) as InputCase[];
+  const rendered: string[] = [];
+  for (const doc of docs) {
+    rendered.push(parse(doc.markdown));
+  }
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(path.join(outDir, 'html.json'), JSON.stringify(rendered));
+}
+
+main();
