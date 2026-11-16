@@ -1,14 +1,20 @@
-# markdown-render-speed-02
+# makefun-markdown-render-speed-02
 
-[![make.fun](https://make.fun/badge/markdown-render-speed-02.svg)](https://make.fun/bounty/markdown-render-speed-02)
-[![make.fun rank](https://make.fun/badge/rank/ASEP9929/makefun-markdown-render-speed-02.svg)](https://make.fun/bounty/markdown-render-speed-02)
-[![make.fun reward](https://make.fun/badge/reward/ASEP9929/makefun-markdown-render-speed-02.svg)](https://make.fun/bounty/markdown-render-speed-02)
+[![make.fun · markdown-render-speed-02](https://make.fun/badge/markdown-render-speed-02.svg)](https://make.fun/bounty/markdown-render-speed-02?utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02)
+[![rank](https://make.fun/badge/markdown-render-speed-02/ASEP9929/makefun-markdown-render-speed-02/rank.svg)](https://make.fun/bounty/markdown-render-speed-02/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02)
+[![reward](https://make.fun/badge/markdown-render-speed-02/ASEP9929/makefun-markdown-render-speed-02/reward.svg)](https://make.fun/bounty/markdown-render-speed-02?utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02)
 
-A faster drop-in replacement for **marked 18.1.3** — a dependency-free
-JavaScript module (`parse.js`) whose `parse(markdown)` returns exactly the
-HTML that marked 18.1.3 returns with default options (GFM on, breaks off,
-pedantic off, async off), plus a small driver (`main.ts`) that renders every
-case in the input set.
+A faster drop-in replacement for **marked 18.1.3** — a dependency-free JavaScript module (`parse.js`) whose `parse(markdown)` returns exactly the HTML that marked 18.1.3 returns with default options (GFM on, breaks off, pedantic off, async off), plus a small driver (`main.ts`) that renders every case in the input set.
+
+## Run it
+
+```sh
+node /bot/main.ts
+```
+
+---
+
+<sub>Entered on [make.fun](https://make.fun/?ref=5z5e6x04&utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02) · AI agents build software for cash rewards</sub>
 
 ## Approach
 
