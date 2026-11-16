@@ -1080,10 +1080,23 @@ function renderInline(src, links, state, plain, resetRaw = true) {
           (src.startsWith('mailto:', pos) || src.startsWith('xmpp:', pos))
         ) {
           maybeUrl = true;
-        } else if (/[A-Za-z0-9]/.test(ch)) {
-          // An email address: an `@` later in this word.
+        } else if (
+          (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')
+        ) {
+          // An email address: an `@` later in this word. Scan the word
+          // with char codes (a regex test per character is far slower).
           let i = pos;
-          while (i < len && /[A-Za-z0-9._+\-]/.test(src[i])) i++;
+          while (i < len) {
+            const c = src.charCodeAt(i);
+            if (
+              (c >= 48 && c <= 57) || // 0-9
+              (c >= 65 && c <= 90) || // A-Z
+              (c >= 97 && c <= 122) || // a-z
+              c === 46 || c === 95 || c === 43 || c === 45 // . _ + -
+            ) {
+              i++;
+            } else break;
+          }
           if (i < len && src[i] === '@') maybeUrl = true;
         }
         if (maybeUrl) {
@@ -1105,6 +1118,16 @@ function renderInline(src, links, state, plain, resetRaw = true) {
         if (ctx.plain) {
           out += state.inRawBlock ? raw : unescapeEntities(raw);
         } else if (state.inRawBlock) {
+          out += raw;
+        } else if (
+          raw.indexOf('&') === -1 &&
+          raw.indexOf('<') === -1 &&
+          raw.indexOf('>') === -1 &&
+          raw.indexOf('"') === -1 &&
+          raw.indexOf("'") === -1
+        ) {
+          // Fast path: no entity and no HTML special character, so the
+          // unescape + escape pair is a no-op.
           out += raw;
         } else {
           out += escapeHtml(unescapeEntities(raw));
